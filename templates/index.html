@@ -11,6 +11,8 @@
 	<script>
 		const mail = "{{ mail }}";
 		function openDoor() {
+			let paragraph = document.querySelector("p");
+			paragraph.innerText = `Welcome ${mail}! We're processing your request...`
 			fetch("{{ url_for('groom_api_open') }}", {method: "POST", credentials: "same-origin"})
 				.catch(error => console.log(error))
 				.then(response => response.json())

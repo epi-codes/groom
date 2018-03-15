@@ -12,6 +12,7 @@ flask-sqlalchemy = "*"
 flask-oauthlib = "*"
 flask-limiter = "*"
 uwsgi = "*"
+pymysql = "*"
 
 
 [dev-packages]

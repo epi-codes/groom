@@ -1,0 +1,72 @@
+body {
+	background: #23272A;
+	color: #FFFFFF;
+	display: flex;
+	flex-direction: column;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+body h1, body p {
+	text-align: center;
+}
+
+nav {
+	display: flex;
+	justify-content: center;
+	text-align: center;
+}
+
+@media (max-width: 400px) {
+	nav {
+		flex-flow: column;
+	}
+}
+
+nav a, nav button, nav a:visited {
+	background: #2C2F33;
+	border: none;
+	border-width: 0;
+	border-radius: 2px;
+	box-shadow: 0 2px 2px black;
+	color: #FFFFFF;
+	font-size: 1rem;
+	margin: 0.5em;
+	padding: 1em;
+	font-family: Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	transition: all 0.5s ease;
+}
+
+nav a:hover, nav button:hover:not(:disabled) {
+	background: white;
+	box-shadow: 0 4px 8px black;
+	color: #2C2F33;
+	transition: all 0.5s ease;
+}
+
+nav button:disabled {
+	background: #2C2F33;
+	box-shadow: none;
+	color: #99AAB5;
+}
+
+nav button {
+	padding: calc(1em - 1px);
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+	max-width: 100%;
+}
+
+td, th {
+	padding: 1em;
+	text-align: left;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+tr:nth-child(2n), thead tr {
+	background: #2C2F33;
+}

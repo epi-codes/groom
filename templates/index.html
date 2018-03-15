@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+	<title>Epitech Groom</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+{% if level >= 0 %}
+	<script>
+		const mail = "{{ mail }}";
+		function openDoor() {
+			fetch("{{ url_for('groom_api_open') }}", {method: "POST", credentials: "same-origin"})
+				.catch(error => console.log(error))
+				.then(response => response.json())
+				.then(response => {
+					let paragraph = document.querySelector("p");
+
+					if (!response.ok) {
+						paragraph.innerText = `Welcome ${mail}! Something went wrong: ${response.error}...`
+					} else {
+						paragraph.innerText = `Welcome ${mail}! The door is open!`
+					}
+				});
+		}
+	</script>
+{% endif %}
+</head>
+<body>
+<h1>Epitech Groom</h1>
+{% if mail == None %}
+	<p>This platform allows an Epitech student to open Epitech Lyon's temporary entrance.<br/>
+	This solves the security problems posed by blocking the door, and allows us to come and go as we please,
+	like what Epitech should be.</p>
+
+	<nav>
+		<a href="{{ url_for('groom_api_login') }}">Login with Office365</a>
+	</nav>
+{% else %}
+	<p>Welcome, {{ mail }}!{% if level < 0 %} You don't seem to be allowed to open the door. :({% endif %}</p>
+	<nav>
+		{% if level >= 0 %}<button onclick="openDoor();">Open the door!</button>{% endif %}
+		{% if level >= 1 %}<a href="{{ url_for('groom_log') }}">Open Logs</a>{% endif %}
+		<a href="{{ url_for('groom_api_logout') }}">Logout</a>
+	</nav>
+{% endif %}
+</body>
+</html>

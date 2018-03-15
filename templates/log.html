@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Epitech Groom Logs</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+	<script src="https://moment.github.io/luxon/global/luxon.min.js"></script>
+	<script>
+		var currentPage = {{ page }};
+		function fetchPage() {
+			let table = document.querySelector("tbody");
+			while (table.hasChildNodes()) {
+				table.removeChild(table.lastChild);
+			}
+
+			fetch(`{{ url_for('groom_api_log') }}/${currentPage}`, {credentials: "same-origin"})
+				.catch(error => console.log(error))
+				.then(response => response.json())
+				.then(response => {
+					if (!response.ok) {
+						// TODO: Proper erroring
+						console.log(response.error);
+					}
+
+					document.querySelector("#next").disabled = !response.next;
+					document.querySelector("#prev").disabled = !response.prev;
+
+					for (let attempt of response.attempts) {
+						let elem = document.createElement("tr");
+						let timeCell = document.createElement("td");
+						timeCell.innerText = luxon.DateTime.fromMillis(attempt.time * 1000).toLocaleString(luxon.DateTime.DATETIME_MED_WITH_SECONDS);
+						elem.appendChild(timeCell);
+
+						let userCell = document.createElement("td");
+						if (attempt.user !== "unknown") {
+							let userLink = document.createElement("a");
+							userLink.innerText = attempt.user;
+							userLink.href = `https://intra.epitech.eu/user/${attempt.user}`;
+							userCell.appendChild(userLink);
+						} else {
+							userCell.innerText = "Unknown";
+						}
+						elem.appendChild(userCell);
+
+						let resultCell = document.createElement("td");
+						switch (attempt.result) {
+						case "protocol-error":
+							resultCell.innerText = "Protocol Failure";
+							break;
+						case "unauthorized":
+							resultCell.innerText = "Access Denied";
+							break;
+						case "granted":
+							resultCell.innerText = "Access Granted";
+							break;
+						case "ratelimit-hit":
+							resultCell.innerText = "Rate-limited";
+							break;
+
+						default:
+							resultCell.innerText = attempt.result;
+							break;
+						}
+						elem.appendChild(resultCell);
+
+						table.appendChild(elem);
+					}
+				});
+		}
+
+		function nextPage() {
+			currentPage += 1;
+			fetchPage();
+		}
+
+		function prevPage() {
+			currentPage -= 1;
+			fetchPage();
+		}
+	</script>
+</head>
+<body onload="fetchPage();">
+	<table>
+		<thead>
+			<tr>
+				<th>Time</th>
+				<th>Login</th>
+				<th>Result</th>
+			{% if level >= 2 %}
+				<th>Operations (NYI)</th>
+			{% endif %}
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+	<nav>
+		<button id="prev" onclick="prevPage();">« Previous</button>
+		<a href="{{ url_for('groom_index') }}">Home</a>
+		<button id="next" onclick="nextPage();">Next »</button>
+	</nav>
+</body>
+</html>

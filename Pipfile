@@ -11,6 +11,7 @@ flask = "*"
 flask-sqlalchemy = "*"
 flask-oauthlib = "*"
 flask-limiter = "*"
+uwsgi = "*"
 
 
 [dev-packages]

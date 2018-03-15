@@ -70,3 +70,7 @@ td, th {
 tr:nth-child(2n), thead tr {
 	background: #2C2F33;
 }
+
+table a, table a:visited {
+    color: #7289DA;
+}

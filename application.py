@@ -54,6 +54,7 @@ def groom_log(page=1):
 
 @app.route('/api/auth/login')
 def groom_api_login():
+	fk.session.permanent = True
 	if 'access_token' in fk.session:
 		return util.json(403, 'Already logged in')
 

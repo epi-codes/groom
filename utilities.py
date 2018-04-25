@@ -44,7 +44,7 @@ def prepare_app(name):
 		__tablename__ = 'attempt'
 
 		id     = db.Column(db.Integer, primary_key=True)
-		user   = db.Column(db.Text)
+		user   = db.Column(db.String(120))
 		time   = db.Column(db.Integer)
 		# XXX: Maybe we should use an enum instead.
 		result = db.Column(db.Text)
@@ -57,7 +57,7 @@ def prepare_app(name):
 		__tablename__ = 'user'
 
 		id    = db.Column(db.Integer, primary_key=True)
-		user  = db.Column(db.Text, unique=True)
+		user  = db.Column(db.String(120), unique=True)
 		# XXX: Maybe we should use an enum instead.
 		level = db.Column(db.Integer)
 		# Levels:

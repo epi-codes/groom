@@ -55,8 +55,7 @@ def groom_log(page=1):
 @app.route('/api/auth/login')
 def groom_api_login():
 	if 'access_token' in fk.session:
-		fk.abort(403)
-		# return util.json(403, 'Already logged in')
+		return util.json(403, 'Already logged in')
 
 	state = fk.session['state'] = str(uuid.uuid4())
 	callback = app.config['MSAPI_REDIRECT_URL']
@@ -65,8 +64,7 @@ def groom_api_login():
 @app.route('/api/auth/logout')
 def groom_api_logout():
 	if 'access_token' not in fk.session:
-		fk.abort(401)
-		# return util.json(401, 'Not logged in')
+		return util.json(401, 'Not logged in')
 
 	del fk.session['access_token']
 	return fk.redirect('/')
@@ -74,8 +72,7 @@ def groom_api_logout():
 @app.route('/api/auth/authorized')
 def groom_api_authorized():
 	if fk.session['state'] != str(fk.request.args['state']):
-		fk.abort(401)
-		# return util.json(401, 'Invalid state')
+		return util.json(401, 'Invalid state')
 
 	response = fk.g.msapi.authorized_response()
 	fk.session['access_token'] = response['access_token']
